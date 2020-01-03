@@ -29,6 +29,7 @@ from topydo.lib.TodoList import TodoList
 
 from .command_testcase import CommandTest
 from .facilities import load_file_to_todolist
+from .test_progress_color import set_16_colors
 
 # We're searching for 'mock'
 # 'mock' was added as 'unittest.mock' in Python 3.3, but PyPy 3 is based on Python 3.2
@@ -596,6 +597,7 @@ class ListCommandIcalTest(CommandTest):
 class ListCommandDotTest(CommandTest):
     def setUp(self):
         self.maxDiff = None
+        set_16_colors()
 
     def test_dot(self):
         todolist = load_file_to_todolist("test/data/ListCommandDotTest.txt")

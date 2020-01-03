@@ -348,9 +348,9 @@ class DepCommandTest(CommandTest):
         self.assertFalse(self.todolist.dirty)
         self.assertEqual(self.output, """digraph topydo {
 node [ shape="none" margin="0" fontsize="9" fontname="Helvetica" ]
-  _2 [label=<<TABLE CELLBORDER="0" CELLSPACING="1" VALIGN="top"><TR><TD><B>2</B></TD><TD BALIGN="LEFT"><B>Bar</B></TD></TR></TABLE>> style=filled fillcolor="#008000" fontcolor="#ffffff"]
-  _3 [label=<<TABLE CELLBORDER="0" CELLSPACING="1" VALIGN="top"><TR><TD><B>3</B></TD><TD BALIGN="LEFT"><B>Baz</B></TD></TR></TABLE>> style=filled fillcolor="#008000" fontcolor="#ffffff"]
-  _1 [label=<<TABLE CELLBORDER="0" CELLSPACING="1" VALIGN="top"><TR><TD><B>1</B></TD><TD BALIGN="LEFT"><B>Foo</B></TD></TR></TABLE>> style=filled fillcolor="#008000" fontcolor="#ffffff"]
+  _2 [label=<<TABLE CELLBORDER="0" CELLSPACING="1" VALIGN="top"><TR><TD><B>2</B></TD><TD BALIGN="LEFT"><B>Bar</B></TD></TR></TABLE>> style=filled fillcolor="#005f00" fontcolor="#ffffff"]
+  _3 [label=<<TABLE CELLBORDER="0" CELLSPACING="1" VALIGN="top"><TR><TD><B>3</B></TD><TD BALIGN="LEFT"><B>Baz</B></TD></TR></TABLE>> style=filled fillcolor="#005f00" fontcolor="#ffffff"]
+  _1 [label=<<TABLE CELLBORDER="0" CELLSPACING="1" VALIGN="top"><TR><TD><B>1</B></TD><TD BALIGN="LEFT"><B>Foo</B></TD></TR></TABLE>> style=filled fillcolor="#005f00" fontcolor="#ffffff"]
   _1 -> _2
   _1 -> _3
 }\n

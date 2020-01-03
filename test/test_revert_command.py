@@ -287,6 +287,7 @@ class RevertCommandTest(CommandTest):
         self.assertEqual(self.errors, "")
 
     def test_revert_ls(self):
+        # FIXME fails with colors=256
         backup = BackupSimulator(self.todolist, self.archive, '1', ['add One'])
         command_executer(AddCommand, ["One"], self.todolist, None, self.out, self.error, None)
         backup.save(self.todolist)

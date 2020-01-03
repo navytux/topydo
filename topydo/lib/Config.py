@@ -236,7 +236,7 @@ class _Config:
             colors = lookup[self.defaults['topydo']['colors'].lower()]  # pylint: disable=no-member
         except KeyError:
             # for invalid values or 'auto'
-            colors = 16 if p_hint_possible else 0
+            colors = 256 if p_hint_possible else 0
 
         # disable colors when no colors are enforced on the commandline and
         # color support is determined automatically

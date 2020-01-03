@@ -29,16 +29,21 @@ from .topydo_testcase import TopydoTest
 def set_256_colors():
     config(p_overrides={('topydo', 'colors'): '256'})
 
+def set_16_colors():
+    config(p_overrides={('topydo', 'colors'): '16'})
+
 @freeze_time('2016, 01, 01')
 class ProgressColorTest(TopydoTest):
 
     def test_progress1(self):
         """ Test progress of task with no length """
+        set_16_colors()
         color = progress_color(Todo('Foo'))
         self.assertEqual(color.color, 2)
 
     def test_progress2(self):
         """ Test progress of task with no length (but with creation date). """
+        set_16_colors()
         color = progress_color(Todo('2016-02-11 Foo'))
         self.assertEqual(color.color, 2)
 
@@ -58,6 +63,7 @@ class ProgressColorTest(TopydoTest):
 
     def test_progress5(self):
         """ Test overdue tasks """
+        set_16_colors()
         color = progress_color(Todo('Foo due:2015-12-31'))
         self.assertEqual(color.color, 1)
 
@@ -70,6 +76,7 @@ class ProgressColorTest(TopydoTest):
 
     def test_progress7(self):
         """ Due today """
+        set_16_colors()
         color = progress_color(Todo('Foo due:2016-01-01'))
         self.assertEqual(color.color, 3)
 
@@ -82,6 +89,7 @@ class ProgressColorTest(TopydoTest):
 
     def test_progress9(self):
         """ Due tomorrow """
+        set_16_colors()
         color = progress_color(Todo('Foo due:2016-01-02'))
         # a length of 14 days is assumed
         self.assertEqual(color.color, 3)
@@ -94,6 +102,7 @@ class ProgressColorTest(TopydoTest):
 
     def test_progress11(self):
         """ Due tomorrow (creation date) """
+        set_16_colors()
         color = progress_color(Todo('2016-01-01 Foo due:2016-01-02'))
         # a length of 14 days is assumed
         self.assertEqual(color.color, 2)
@@ -106,6 +115,7 @@ class ProgressColorTest(TopydoTest):
 
     def test_progress13(self):
         """ Due tomorrow (recurrence) """
+        set_16_colors()
         color = progress_color(Todo('Foo due:2016-01-02 rec:1d'))
         self.assertEqual(color.color, 2)
 
@@ -117,6 +127,7 @@ class ProgressColorTest(TopydoTest):
 
     def test_progress15(self):
         """ Due tomorrow (creation date + recurrence) """
+        set_16_colors()
         color = progress_color(Todo('2016-12-01 Foo due:2016-01-02 rec:1d'))
         self.assertEqual(color.color, 2)
 
@@ -128,6 +139,7 @@ class ProgressColorTest(TopydoTest):
 
     def test_progress17(self):
         """ Due tomorrow (creation date + recurrence + start date) """
+        set_16_colors()
         color = progress_color(Todo('2016-12-01 Foo due:2016-01-02 rec:1d t:2016-01-02'))
         self.assertEqual(color.color, 2)
 
@@ -139,6 +151,7 @@ class ProgressColorTest(TopydoTest):
 
     def test_progress19(self):
         """ Due tomorrow (creation date + strict recurrence + start date) """
+        set_16_colors()
         color = progress_color(Todo('2016-12-01 Foo due:2016-01-02 rec:+1d t:2016-01-02'))
         self.assertEqual(color.color, 2)
 
@@ -150,6 +163,7 @@ class ProgressColorTest(TopydoTest):
 
     def test_progress21(self):
         """ Due tomorrow (creation date + start date) """
+        set_16_colors()
         color = progress_color(Todo('2016-12-01 Foo due:2016-01-02 t:2016-01-02'))
         self.assertEqual(color.color, 2)
 
@@ -161,6 +175,7 @@ class ProgressColorTest(TopydoTest):
 
     def test_progress23(self):
         """ Due tomorrow (creation date + start date) """
+        set_16_colors()
         color = progress_color(Todo('2016-12-01 Foo due:2016-01-02 t:2015-12-31'))
         self.assertEqual(color.color, 10)
 
@@ -172,6 +187,7 @@ class ProgressColorTest(TopydoTest):
 
     def test_progress25(self):
         """ Start date after due date """
+        set_16_colors()
         color = progress_color(Todo('Foo due:2016-01-02 t:2016-01-03'))
         # a length of 14 days is assumed
         self.assertEqual(color.color, 3)
@@ -197,6 +213,7 @@ class ProgressColorTest(TopydoTest):
             "Bar p:1",
         ])
 
+        set_16_colors()
         color = progress_color(todolist.todo(2))
 
         # color the subitem red because it has no color of its own and its
@@ -210,6 +227,7 @@ class ProgressColorTest(TopydoTest):
             "Bar p:1 t:2016-01-01 due:2016-01-01",
         ])
 
+        set_16_colors()
         color = progress_color(todolist.todo(2))
 
         # the parent has no influence here
@@ -222,6 +240,7 @@ class ProgressColorTest(TopydoTest):
             "Bar p:1",
         ])
 
+        set_16_colors()
         color = progress_color(todolist.todo(2))
 
         # the parent has no influence here
