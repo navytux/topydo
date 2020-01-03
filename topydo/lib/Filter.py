@@ -382,7 +382,18 @@ def get_filter_list(p_expression):
     The filter expression is a list of strings.
     """
     result = []
+    or_ = False # was previous word '||'
     for arg in p_expression:
+
+        # XXX draft support for OR filters
+        # TODO tests
+        # TODO add support for {...} https://support.google.com/mail/answer/7190
+        if arg.lower() in ('||', 'or'):
+            # XXX error if it already was || previously
+            # XXX error if there was not previous filter
+            or_ = True
+            continue
+
         # when a word starts with -, it should be negated
         is_negated = len(arg) > 1 and arg[0] == '-'
         arg = arg[1:] if is_negated else arg
@@ -399,6 +410,10 @@ def get_filter_list(p_expression):
         if is_negated:
             argfilter = NegationFilter(argfilter)
 
-        result.append(argfilter)
+        if or_:
+            result[-1] = OrFilter(result[-1], argfilter)
+            or_ = False
+        else:
+            result.append(argfilter)
 
     return result
