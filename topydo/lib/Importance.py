@@ -41,7 +41,7 @@ def is_due_next_monday(p_todo):
         p_todo.days_till_due() <= 3
 
 
-def importance(p_todo, p_ignore_weekend=config().ignore_weekends()):
+def importance(p_todo, p_ignore_weekend=config().ignore_weekends(), p_ignore_due=False):
     """
     Calculates the importance of the given task.
     Returns an importance of zero when the task has been completed.
@@ -56,22 +56,23 @@ def importance(p_todo, p_ignore_weekend=config().ignore_weekends()):
     priority = p_todo.priority()
     result += IMPORTANCE_VALUE[priority] if priority in IMPORTANCE_VALUE else 0
 
-    if p_todo.has_tag(config().tag_due()):
-        days_left = p_todo.days_till_due()
+    if not p_ignore_due:
+        if p_todo.has_tag(config().tag_due()):
+            days_left = p_todo.days_till_due()
 
-        if days_left >= 7 and days_left < 14:
+            if days_left >= 7 and days_left < 14:       # [1w, 2w)
+                result += 1
+            elif days_left >= 2 and days_left < 7:      # [2d, 1w)
+                result += 2
+            elif days_left >= 1 and days_left < 2:      # [1d, 2d)
+                result += 3
+            elif days_left >= 0 and days_left < 1:      # [0d, 1d)
+                result += 5
+            elif days_left < 0:                         # [-oo, 0)
+                result += 6
+
+        if p_ignore_weekend and is_due_next_monday(p_todo):
             result += 1
-        elif days_left >= 2 and days_left < 7:
-            result += 2
-        elif days_left >= 1 and days_left < 2:
-            result += 3
-        elif days_left >= 0 and days_left < 1:
-            result += 5
-        elif days_left < 0:
-            result += 6
-
-    if p_ignore_weekend and is_due_next_monday(p_todo):
-        result += 1
 
     if p_todo.has_tag(config().tag_star()):
         result += 1

@@ -23,6 +23,7 @@ from datetime import date, timedelta
 from topydo.lib.Config import config
 from topydo.lib.TodoBase import TodoBase
 from topydo.lib.Utils import date_string_to_date
+from topydo.lib.Importance import importance
 
 
 class Todo(TodoBase):
@@ -73,7 +74,9 @@ class Todo(TodoBase):
             return tstart
         tdue, flags = self._due_date()
         if 'on' in flags:
-            tstart = tdue - timedelta(days=1)
+            # δdays ~ importance
+            ddays  = max(1, importance(self, p_ignore_due=True) - 1)
+            tstart = tdue - timedelta(days=ddays)
         return tstart
 
     def due_date(self):
