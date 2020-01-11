@@ -18,7 +18,7 @@
 This module provides the Todo class.
 """
 
-from datetime import date
+from datetime import date, timedelta
 
 from topydo.lib.Config import config
 from topydo.lib.TodoBase import TodoBase
@@ -47,13 +47,39 @@ class Todo(TodoBase):
 
         return result
 
+    def _due_date(self): # -> (due, flags)
+        """ Returns date object for due date and set of due modifier flags. """
+        flags = set()
+        due   = self.tag_value(config().tag_due())
+        if due is None:
+            return (None, flags)
+        if due.startswith('='):
+            flags.add('on')
+            due = due[1:]
+
+        tdue = None
+        try:
+            tdue = date_string_to_date(due)
+        except ValueError:
+            flags = set()
+
+        return (tdue, flags)
+
+
     def start_date(self):
         """ Returns a date object of the todo's start date. """
-        return self.get_date(config().tag_start())
+        tstart = self.get_date(config().tag_start())
+        if tstart is not None:
+            return tstart
+        tdue, flags = self._due_date()
+        if 'on' in flags:
+            tstart = tdue - timedelta(days=1)
+        return tstart
 
     def due_date(self):
         """ Returns a date object of the todo's due date. """
-        return self.get_date(config().tag_due())
+        tdue, _ = self._due_date()
+        return tdue
 
     def is_active(self):
         """
