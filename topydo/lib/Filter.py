@@ -283,7 +283,16 @@ class OrdinalTagFilter(OrdinalFilter):
             return resort_to_grep_filter()
 
         try:
-            operand1 = date_string_to_date(p_todo.tag_value(self.key))
+            # due: and t: can have modifiers
+            if self.key == 'due':
+                _ = p_todo.due_date()
+            elif self.key == 't':
+                _ = p_todo.start_date()
+            else:
+                _ = date_string_to_date(p_todo.tag_value(self.key))
+            if _ is None:
+                raise ValueError
+            operand1 = _
             operand2 = relative_date_to_date(self.value)
 
             if not operand2:

@@ -43,6 +43,7 @@ class PostponeCommand(MultiCommand):
 
     def _execute_multi_specific(self):
         def _get_offset(p_todo):
+            # FIXME handle due modifiers
             offset = p_todo.tag_value(
                 config().tag_due(), date.today().isoformat())
 
@@ -75,7 +76,7 @@ class PostponeCommand(MultiCommand):
                     self.error("Warning: todo item has no (valid) start date, therefore it was not adjusted.")
 
                 # pylint: disable=E1103
-                todo.set_tag(config().tag_due(), new_due.isoformat())
+                todo.set_tag(config().tag_due(), new_due.isoformat())   # FIXME preserve due flags
 
                 self.todolist.dirty = True
                 self.out(self.printer.print_todo(todo))

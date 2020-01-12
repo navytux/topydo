@@ -62,6 +62,7 @@ def advance_recurring_todo(p_todo, p_offset=None, p_strict=False):
         raise NoRecurrenceException()
 
     # pylint: disable=E1103
+    # FIXME preserve due modifiers
     todo.set_tag(config().tag_due(), new_due.isoformat())
 
     if todo.start_date():
