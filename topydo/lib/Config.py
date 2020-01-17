@@ -57,6 +57,7 @@ class _Config:
             'column_keymap',
             'columns',
             'dep',
+            'implied',
             'ls',
             'sort',
             'tags',
@@ -127,6 +128,9 @@ class _Config:
                 'listcon': 'lscon',
                 'listcontext': 'lscon',
                 'listcontexts': 'lscon',
+            },
+
+            'implied': {
             },
 
             'columns': {
@@ -419,6 +423,19 @@ class _Config:
                 alias_dict[alias] = str(verr)
 
         return alias_dict
+
+    def implied(self):
+        """
+        implied returns {} with key -> [] of implied items
+        """
+        implied = self.cp.items('implied')
+        implied_dict = {}
+
+        for key, implied_line in implied:
+            impliedv = implied_line.split()
+            implied_dict[key] = impliedv
+
+        return implied_dict
 
     def list_format(self):
         """ Returns the list format used by `ls` """

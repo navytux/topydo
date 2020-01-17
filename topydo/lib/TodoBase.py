@@ -23,6 +23,7 @@ from datetime import date
 
 from topydo.lib.TodoParser import parse_line
 from topydo.lib.Utils import is_valid_priority
+from topydo.lib.Implied import implied
 
 
 class TodoBase(object):
@@ -40,6 +41,8 @@ class TodoBase(object):
     def __init__(self, p_src):
         self.src = ""
         self.fields = {}
+        self._xsrc = ""     # .src extended with implied contexts and labels
+                            # (ex +pygolang -> +work, @jp -> +work, @удельная -> @город)
 
         self.set_source_text(p_src)
 
@@ -174,10 +177,24 @@ class TodoBase(object):
         """
         return self.text(True)
 
+    def xsource(self):
+        """xsource returns extended source of the todo.
+
+        That is original todo source appended with contexts and labels implied
+        from original todo source.
+
+        GrepFilter uses xsource to match query not only to original todo
+        source, but also to contexts and labels implied to the todo item. """
+        return self._xsrc
+
     def set_source_text(self, p_text):
         """ Sets the todo source text. The text will be parsed again. """
         self.src = p_text.strip()
         self.fields = parse_line(self.src)
+        xsrc = self.src
+        xsrc = ' '.join([xsrc] + implied(['+'+_ for _ in self.fields['projects']]))
+        xsrc = ' '.join([xsrc] + implied(['@'+_ for _ in self.fields['contexts']]))
+        self._xsrc = xsrc
 
     def projects(self):
         """ Returns a set of projects associated with this todo item. """

@@ -82,7 +82,7 @@ class GrepFilter(Filter):
 
     def match(self, p_todo):
         expr = self.expression
-        string = p_todo.source()
+        string = p_todo.xsource()
         if not self.case_sensitive:
             expr = expr.lower()
             string = string.lower()
